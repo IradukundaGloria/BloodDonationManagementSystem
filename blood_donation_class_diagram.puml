@@ -1,0 +1,93 @@
+@startuml blood_donation_class_diagram
+
+title Blood Donation Management System — Initial Class Diagram
+
+class Donor {
+  - Long donorId
+  - String firstName
+  - String lastName
+  - Integer age
+  - String gender
+  - String bloodGroup
+  - String phone
+  - String email
+  - String address
+  - Date registrationDate
+  - String eligibilityStatus
+  + getFullName(): String
+}
+
+class Recipient {
+  - Long recipientId
+  - String firstName
+  - String lastName
+  - Integer age
+  - String gender
+  - String bloodGroup
+  - String phone
+  - String email
+  - String address
+  - String medicalNeed
+  - Date registrationDate
+  - String status
+  + getFullName(): String
+}
+
+class BloodDonation {
+  - Long donationId
+  - Donor donor
+  - String bloodGroup
+  - Date donationDate
+  - Integer quantity
+  - String donationStatus
+  - Boolean medicalApproval
+}
+
+class BloodRequest {
+  - Long requestId
+  - Recipient recipient
+  - String bloodGroup
+  - Integer quantityRequested
+  - Date requestDate
+  - String priority
+  - String requestStatus
+}
+
+class BloodInventory {
+  - Long inventoryId
+  - String bloodGroup
+  - Integer quantityAvailable
+  - Date lastUpdated
+  - String storageStatus
+}
+
+class Doctor {
+  - Long doctorId
+  - String firstName
+  - String lastName
+  - String specialization
+  - String phone
+  - String email
+  - String licenseNumber
+}
+
+class Admin {
+  - Long adminId
+  - String firstName
+  - String lastName
+  - String username
+  - String email
+  - String role
+}
+
+' Entity Relationships and Cardinalities
+Donor "1" -- "0..*" BloodDonation : submits >
+Recipient "1" -- "0..*" BloodRequest : requests >
+BloodDonation "0..*" -- "1" BloodInventory : updates stock >
+BloodRequest "0..*" -- "1" BloodInventory : fulfills from stock >
+Doctor "1" -- "0..*" BloodDonation : reviews & approves >
+Doctor "1" -- "0..*" BloodRequest : reviews clinical priority >
+Admin "1" -- "0..*" Donor : manages records >
+Admin "1" -- "0..*" Recipient : manages records >
+
+@enduml

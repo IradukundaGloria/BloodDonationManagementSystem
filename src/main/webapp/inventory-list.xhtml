@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blood Inventory Directory — Blood Donation System</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</h:head>
+<h:body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <a href="index.xhtml" class="navbar-brand">
+            <span style="font-size: 1.8rem; color: #ff6b6b;">🩸</span> Blood Donation System
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.xhtml">Dashboard</a></li>
+            <li><a href="donor-list.xhtml">Donors</a></li>
+            <li><a href="recipient-list.xhtml">Recipients</a></li>
+            <li><a href="inventory-list.xhtml" class="active">Inventory</a></li>
+            <h:panelGroup rendered="#{not authBean.loggedIn}">
+                <li><a href="staff-login.xhtml">Staff Login</a></li>
+            </h:panelGroup>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <h:form id="inventoryListForm">
+            <!-- Staff Session Protection Bar -->
+            <div style="background-color: #{authBean.loggedIn ? '#e8f5e9' : '#fff3cd'}; border: 1px solid #{authBean.loggedIn ? '#c8e6c9' : '#ffe0b2'}; padding: 12px 20px; border-radius: 8px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <h:panelGroup rendered="#{authBean.loggedIn}">
+                    <div>
+                        <strong style="color: #2e7d32;">Authenticated Staff Session:</strong>
+                        <span style="margin-left: 8px; color: #1b5e20;">#{authBean.currentUserName}</span>
+                        <span style="background-color: #a5d6a7; color: #1b5e20; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; margin-left: 6px;">ID: #{authBean.currentUserId}</span>
+                        <span style="color: #555; font-size: 0.85rem; margin-left: 8px;">(#{authBean.userRole})</span>
+                    </div>
+                    <h:commandLink action="#{authBean.logout}" styleClass="btn btn-secondary btn-sm" style="background-color: #616161;">
+                        Log Out Staff Session
+                    </h:commandLink>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{not authBean.loggedIn}">
+                    <div>
+                        <strong style="color: #e65100;">Public View Mode:</strong>
+                        <span style="margin-left: 8px; color: #ef6c00;">Admin / Doctor login required to Add, Edit, or Delete stock levels.</span>
+                    </div>
+                    <a href="staff-login.xhtml" class="btn btn-primary btn-sm">Log In as Doctor / Admin →</a>
+                </h:panelGroup>
+            </div>
+
+            <!-- Page Header Actions -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Blood Stock &amp; Inventory Management</h1>
+                    <p style="color: #6c757d; font-size: 0.95rem;">Monitor stock levels, check low stock warnings, and execute Inventory CRUD operations</p>
+                </div>
+                <h:commandLink action="#{inventoryBean.prepareNewStock}" styleClass="btn btn-primary">
+                    + Add New Blood Stock
+                </h:commandLink>
+            </div>
+
+            <!-- Notification Messages -->
+            <h:messages globalOnly="true"
+                        style="padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; list-style-type: none; background-color: #e3f2fd; color: #0d47a1; border: 1px solid #90caf9;" />
+
+            <div class="card">
+                <h:dataTable value="#{inventoryBean.inventoryList}" var="item" styleClass="data-table" rendered="#{not empty inventoryBean.inventoryList}">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #<h:outputText value="#{item.inventoryId}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Blood Group</f:facet>
+                        <strong style="font-size: 1.1rem; color: #c92a2a;">
+                            <h:outputText value="#{item.bloodGroup}" />
+                        </strong>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Available Volume (mL)</f:facet>
+                        <strong><h:outputText value="#{item.quantityAvailable}" /> mL</strong>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Storage &amp; Stock Status</f:facet>
+                        <!-- Inline CSS applied to stock status badge -->
+                        <span style="padding: 5px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: bold; background-color: #{item.storageStatus eq 'Normal' ? '#d4edda' : (item.storageStatus eq 'Low Stock' ? '#fff3cd' : '#f8d7da')}; color: #{item.storageStatus eq 'Normal' ? '#155724' : (item.storageStatus eq 'Low Stock' ? '#856404' : '#721c24')};">
+                            <h:outputText value="#{item.storageStatus}" />
+                        </span>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Last Updated</f:facet>
+                        <h:outputText value="#{item.lastUpdated}">
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+                        </h:outputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Actions (Doctor / Admin)</f:facet>
+                        <div style="display: flex; gap: 8px;">
+                            <h:commandLink action="#{inventoryBean.prepareEditStock(item.inventoryId)}" styleClass="btn btn-secondary btn-sm">
+                                Edit Stock
+                            </h:commandLink>
+                            <h:commandLink action="#{inventoryBean.deleteStock(item.inventoryId)}"
+                                           onclick="return confirm('Are you sure you want to delete blood stock record for #{item.bloodGroup}?');"
+                                           styleClass="btn btn-danger btn-sm">
+                                Delete Stock
+                            </h:commandLink>
+                        </div>
+                    </h:column>
+                </h:dataTable>
+
+                <h:panelGroup rendered="#{empty inventoryBean.inventoryList}">
+                    <p style="text-align: center; color: #6c757d; padding: 2rem 0;">No blood inventory records registered.</p>
+                </h:panelGroup>
+            </div>
+        </h:form>
+
+    </div>
+
+    <footer>
+        <p>&#169; 2026 Blood Donation Management System — University Assignment 3</p>
+    </footer>
+
+</h:body>
+</html>

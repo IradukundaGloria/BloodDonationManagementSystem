@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donor Registration Form — Blood Donation System</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</h:head>
+<h:body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <a href="index.xhtml" class="navbar-brand">
+            <span style="font-size: 1.8rem; color: #ff6b6b;">🩸</span> Blood Donation System
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.xhtml">Dashboard</a></li>
+            <li><a href="donor-list.xhtml" class="active">Donors</a></li>
+            <li><a href="recipient-list.xhtml">Recipients</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">#{donorBean.donor.donorId == null ? 'Register New Donor' : 'Edit Donor Information'}</h1>
+                <p style="color: #6c757d; font-size: 0.95rem;">Demonstrates Layer 1 UI Validation and Layer 2 Business Validation</p>
+            </div>
+            <a href="donor-list.xhtml" class="btn btn-secondary">← Back to Donor Directory</a>
+        </div>
+
+        <!-- Form Error Notification Banner -->
+        <h:messages globalOnly="true"
+                    style="padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; list-style-type: none; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;" />
+
+        <div class="card">
+            <h:form id="donorForm">
+                <h:inputHidden value="#{donorBean.donor.donorId}" />
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem;">
+
+                    <!-- First Name Field -->
+                    <div class="form-group">
+                        <label class="form-label">First Name *</label>
+                        <!-- LAYER 1 UI VALIDATION: required & validateLength -->
+                        <h:inputText id="firstName" value="#{donorBean.donor.firstName}" styleClass="form-control"
+                                     required="true" requiredMessage="UI Validation: First name is required.">
+                            <f:validateLength minimum="2" maximum="50" />
+                        </h:inputText>
+                        <h:message for="firstName" styleClass="error-message" />
+                    </div>
+
+                    <!-- Last Name Field -->
+                    <div class="form-group">
+                        <label class="form-label">Last Name *</label>
+                        <!-- LAYER 1 UI VALIDATION: required & validateLength -->
+                        <h:inputText id="lastName" value="#{donorBean.donor.lastName}" styleClass="form-control"
+                                     required="true" requiredMessage="UI Validation: Last name is required.">
+                            <f:validateLength minimum="2" maximum="50" />
+                        </h:inputText>
+                        <h:message for="lastName" styleClass="error-message" />
+                    </div>
+
+                    <!-- Age Field -->
+                    <div class="form-group">
+                        <label class="form-label">Age (Years) *</label>
+                        <!-- LAYER 1 UI VALIDATION: required & validateLongRange (18-75) -->
+                        <h:inputText id="age" value="#{donorBean.donor.age}" styleClass="form-control"
+                                     required="true" requiredMessage="UI Validation: Age is required."
+                                     converterMessage="UI Validation: Age must be a valid integer number.">
+                            <f:validateLongRange minimum="18" maximum="75" />
+                        </h:inputText>
+                        <h:message for="age" styleClass="error-message" />
+                    </div>
+
+                    <!-- Gender Selection -->
+                    <div class="form-group">
+                        <label class="form-label">Gender *</label>
+                        <!-- LAYER 1 UI VALIDATION: required menu selection -->
+                        <h:selectOneMenu id="gender" value="#{donorBean.donor.gender}" styleClass="form-control"
+                                         required="true" requiredMessage="UI Validation: Please select a gender.">
+                            <f:selectItem itemLabel="-- Select Gender --" itemValue="" />
+                            <f:selectItem itemLabel="Male" itemValue="Male" />
+                            <f:selectItem itemLabel="Female" itemValue="Female" />
+                            <f:selectItem itemLabel="Other" itemValue="Other" />
+                        </h:selectOneMenu>
+                        <h:message for="gender" styleClass="error-message" />
+                    </div>
+
+                    <!-- Blood Group Selection -->
+                    <div class="form-group">
+                        <label class="form-label">Blood Group *</label>
+                        <!-- LAYER 1 UI VALIDATION: required menu selection -->
+                        <h:selectOneMenu id="bloodGroup" value="#{donorBean.donor.bloodGroup}" styleClass="form-control"
+                                         required="true" requiredMessage="UI Validation: Please select a blood group.">
+                            <f:selectItem itemLabel="-- Select Blood Group --" itemValue="" />
+                            <f:selectItems value="#{donorBean.supportedBloodGroups}" />
+                        </h:selectOneMenu>
+                        <h:message for="bloodGroup" styleClass="error-message" />
+                    </div>
+
+                    <!-- Phone Field -->
+                    <div class="form-group">
+                        <label class="form-label">Phone Number *</label>
+                        <!-- LAYER 1 UI VALIDATION: required & validateRegex -->
+                        <h:inputText id="phone" value="#{donorBean.donor.phone}" styleClass="form-control"
+                                     required="true" requiredMessage="UI Validation: Phone number is required.">
+                            <f:validateRegex pattern="^\+?[0-9]{7,15}$" />
+                        </h:inputText>
+                        <h:message for="phone" styleClass="error-message" />
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Email Address * (Must be Unique)</label>
+                        <!-- LAYER 1 UI VALIDATION: required & validateRegex -->
+                        <h:inputText id="email" value="#{donorBean.donor.email}" styleClass="form-control"
+                                     required="true" requiredMessage="UI Validation: Email address is required.">
+                            <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
+                        </h:inputText>
+                        <h:message for="email" styleClass="error-message" />
+                    </div>
+
+                    <!-- Address Field -->
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Residential Address *</label>
+                        <!-- LAYER 1 UI VALIDATION: required & validateLength -->
+                        <h:inputTextarea id="address" value="#{donorBean.donor.address}" styleClass="form-control" rows="3"
+                                         required="true" requiredMessage="UI Validation: Address is required.">
+                            <f:validateLength minimum="5" maximum="200" />
+                        </h:inputTextarea>
+                        <h:message for="address" styleClass="error-message" />
+                    </div>
+
+                    <!-- Eligibility Status Selection -->
+                    <div class="form-group">
+                        <label class="form-label">Eligibility Status *</label>
+                        <h:selectOneMenu id="eligibilityStatus" value="#{donorBean.donor.eligibilityStatus}" styleClass="form-control"
+                                         required="true" requiredMessage="UI Validation: Eligibility status is required.">
+                            <f:selectItems value="#{donorBean.supportedEligibilityStatuses}" />
+                        </h:selectOneMenu>
+                        <h:message for="eligibilityStatus" styleClass="error-message" />
+                    </div>
+
+                </div>
+
+                <!-- Form Action Buttons -->
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <h:commandButton value="#{donorBean.donor.donorId == null ? 'Save &amp; Register Donor' : 'Update Donor Record'}"
+                                     action="#{donorBean.saveDonor}" styleClass="btn btn-primary" />
+                    <a href="donor-list.xhtml" class="btn btn-secondary">Cancel</a>
+                </div>
+            </h:form>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&#169; 2026 Blood Donation Management System — University Assignment 3</p>
+    </footer>
+
+</h:body>
+</html>

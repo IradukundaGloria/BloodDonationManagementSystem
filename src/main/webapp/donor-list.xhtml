@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donor Directory — Blood Donation System</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</h:head>
+<h:body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <a href="index.xhtml" class="navbar-brand">
+            <span style="font-size: 1.8rem; color: #ff6b6b;">🩸</span> Blood Donation System
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.xhtml">Dashboard</a></li>
+            <li><a href="donor-list.xhtml" class="active">Donors</a></li>
+            <li><a href="recipient-list.xhtml">Recipients</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <h:form id="donorListForm">
+            <!-- Page Header Actions -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Blood Donor Directory</h1>
+                    <p style="color: #6c757d; font-size: 0.95rem;">Manage registered voluntary blood donors (READ, UPDATE, DELETE)</p>
+                </div>
+                <h:commandLink action="#{donorBean.prepareNewDonor}" styleClass="btn btn-primary">
+                    + Register New Donor
+                </h:commandLink>
+            </div>
+
+            <!-- REQUIRED ASSIGNMENT REQUIREMENT C: INLINE CSS DEMONSTRATION -->
+            <!-- Inline CSS applied directly to the notification messages banner -->
+            <h:messages globalOnly="true"
+                        style="padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; list-style-type: none; background-color: #e3f2fd; color: #0d47a1; border: 1px solid #90caf9;" />
+
+            <div class="card">
+                <h:dataTable value="#{donorBean.donorList}" var="d" styleClass="data-table" rendered="#{not empty donorBean.donorList}">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #<h:outputText value="#{d.donorId}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Full Name</f:facet>
+                        <strong><h:outputText value="#{d.fullName}" /></strong>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Age</f:facet>
+                        <h:outputText value="#{d.age}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Gender</f:facet>
+                        <h:outputText value="#{d.gender}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Blood Group</f:facet>
+                        <!-- Inline CSS applied to Blood Group Badge -->
+                        <span style="background-color: #ffe3e3; color: #c92a2a; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 0.85rem;">
+                            <h:outputText value="#{d.bloodGroup}" />
+                        </span>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Phone</f:facet>
+                        <h:outputText value="#{d.phone}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Email</f:facet>
+                        <h:outputText value="#{d.email}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Eligibility Status</f:facet>
+                        <!-- Inline CSS applied to status tag -->
+                        <span style="padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; background-color: #{d.eligibilityStatus eq 'Eligible' ? '#d4edda' : '#fff3cd'}; color: #{d.eligibilityStatus eq 'Eligible' ? '#155724' : '#856404'};">
+                            <h:outputText value="#{d.eligibilityStatus}" />
+                        </span>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Actions</f:facet>
+                        <div style="display: flex; gap: 8px;">
+                            <h:commandLink action="#{donorBean.prepareEditDonor(d.donorId)}" styleClass="btn btn-secondary btn-sm">
+                                Edit
+                            </h:commandLink>
+                            <h:commandLink action="#{donorBean.deleteDonor(d.donorId)}"
+                                           onclick="return confirm('Are you sure you want to delete donor #{d.fullName}?');"
+                                           styleClass="btn btn-danger btn-sm">
+                                Delete
+                            </h:commandLink>
+                        </div>
+                    </h:column>
+                </h:dataTable>
+
+                <h:panelGroup rendered="#{empty donorBean.donorList}">
+                    <p style="text-align: center; color: #6c757d; padding: 2rem 0;">No donor records found in database.</p>
+                </h:panelGroup>
+            </div>
+        </h:form>
+
+    </div>
+
+    <footer>
+        <p>&#169; 2026 Blood Donation Management System — University Assignment 3</p>
+    </footer>
+
+</h:body>
+</html>

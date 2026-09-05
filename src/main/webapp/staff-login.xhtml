@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Portal Login — Blood Donation System</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</h:head>
+<h:body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <a href="index.xhtml" class="navbar-brand">
+            <span style="font-size: 1.8rem; color: #ff6b6b;">🩸</span> Blood Donation System
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.xhtml">Dashboard</a></li>
+            <li><a href="donor-list.xhtml">Donors</a></li>
+            <li><a href="recipient-list.xhtml">Recipients</a></li>
+            <li><a href="inventory-list.xhtml">Inventory</a></li>
+            <li><a href="staff-login.xhtml" class="active">Staff Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" style="max-width: 600px; margin-top: 3rem;">
+
+        <div class="page-header" style="justify-content: center; text-align: center; margin-bottom: 2rem;">
+            <div>
+                <h1 class="page-title">Doctor &amp; Admin Staff Portal</h1>
+                <p style="color: #6c757d; font-size: 0.95rem;">Authentication required for Blood Inventory Stock Management</p>
+            </div>
+        </div>
+
+        <!-- Global Messages Banner -->
+        <h:messages globalOnly="true"
+                    style="padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; list-style-type: none; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;" />
+
+        <!-- Login Form Card -->
+        <div class="card">
+            <h:form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    <h:inputText id="staffName" value="#{authBean.inputName}" styleClass="form-control"
+                                 required="true" requiredMessage="UI Validation: Name is required for staff login.">
+                        <f:validateLength minimum="2" maximum="50" />
+                    </h:inputText>
+                    <h:message for="staffName" styleClass="error-message" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Staff User ID * (Format: DOC-1001 or ADM-1001)</label>
+                    <!-- LAYER 1 UI VALIDATION: User ID pattern matching DOC-1001, ADM-1001, DOR-1001 -->
+                    <h:inputText id="userId" value="#{authBean.inputUserId}" styleClass="form-control"
+                                 required="true" requiredMessage="UI Validation: User ID is required.">
+                        <f:validateRegex pattern="^(DOC|ADM|DOR)-[0-9]{4}$" />
+                    </h:inputText>
+                    <h:message for="userId" styleClass="error-message" />
+                    <small style="color: #6c757d; font-size: 0.82rem; display: block; margin-top: 4px;">
+                        Must be formatted as <code>DOC-1001</code> to <code>DOC-100n</code> for Doctors, or <code>ADM-1001</code> for Admins.
+                    </small>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <h:commandButton value="Log In to Staff Portal" action="#{authBean.login}" styleClass="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 12px;" />
+                </div>
+            </h:form>
+        </div>
+
+        <!-- Demo Credentials Hint Box -->
+        <div class="card" style="background-color: #e3f2fd; border: 1px solid #90caf9; margin-top: 1.5rem;">
+            <h4 style="color: #0d47a1; margin-bottom: 0.5rem;">🔑 Evaluator Demonstration Credentials</h4>
+            <p style="font-size: 0.9rem; color: #1565c0; margin-bottom: 0.75rem;">
+                Use any of the pre-seeded Doctor or Admin credentials below to test protected Inventory CRUD features:
+            </p>
+            <ul style="font-size: 0.9rem; color: #0d47a1; margin-left: 1.25rem;">
+                <li><strong>Doctor Login</strong>: Name: <code>Dr. Sarah Jenkins</code> | User ID: <code>DOC-1001</code></li>
+                <li><strong>Doctor Login 2</strong>: Name: <code>Dr. Robert Vance</code> | User ID: <code>DOC-1002</code></li>
+                <li><strong>System Admin Login</strong>: Name: <code>Marcus Vance</code> | User ID: <code>ADM-1001</code></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&#169; 2026 Blood Donation Management System — University Assignment 3</p>
+    </footer>
+
+</h:body>
+</html>

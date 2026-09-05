@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blood Inventory Stock Form — Blood Donation System</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</h:head>
+<h:body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <a href="index.xhtml" class="navbar-brand">
+            <span style="font-size: 1.8rem; color: #ff6b6b;">🩸</span> Blood Donation System
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.xhtml">Dashboard</a></li>
+            <li><a href="donor-list.xhtml">Donors</a></li>
+            <li><a href="recipient-list.xhtml">Recipients</a></li>
+            <li><a href="inventory-list.xhtml" class="active">Inventory</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" style="max-width: 700px;">
+
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">#{inventoryBean.inventory.inventoryId == null ? 'Register New Blood Stock' : 'Edit Blood Stock Level'}</h1>
+                <p style="color: #6c757d; font-size: 0.95rem;">Protected Doctor &amp; Admin Inventory Update Form</p>
+            </div>
+            <a href="inventory-list.xhtml" class="btn btn-secondary">← Back to Inventory Directory</a>
+        </div>
+
+        <!-- Form Error Notification Banner -->
+        <h:messages globalOnly="true"
+                    style="padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; list-style-type: none; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;" />
+
+        <div class="card">
+            <h:form id="inventoryForm">
+                <h:inputHidden value="#{inventoryBean.inventory.inventoryId}" />
+
+                <div class="form-group">
+                    <label class="form-label">Blood Group *</label>
+                    <!-- LAYER 1 UI VALIDATION: required selection -->
+                    <h:selectOneMenu id="bloodGroup" value="#{inventoryBean.inventory.bloodGroup}" styleClass="form-control"
+                                     required="true" requiredMessage="UI Validation: Blood group selection is required.">
+                        <f:selectItem itemLabel="-- Select Blood Group --" itemValue="" />
+                        <f:selectItems value="#{inventoryBean.supportedBloodGroups}" />
+                    </h:selectOneMenu>
+                    <h:message for="bloodGroup" styleClass="error-message" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Available Stock Volume (mL) *</label>
+                    <!-- LAYER 1 UI VALIDATION: required & validateLongRange -->
+                    <h:inputText id="quantity" value="#{inventoryBean.inventory.quantityAvailable}" styleClass="form-control"
+                                 required="true" requiredMessage="UI Validation: Stock volume is required."
+                                 converterMessage="UI Validation: Quantity must be a valid integer number in mL.">
+                        <f:validateLongRange minimum="0" maximum="200000" />
+                    </h:inputText>
+                    <h:message for="quantity" styleClass="error-message" />
+                    <small style="color: #6c757d; font-size: 0.82rem; display: block; margin-top: 4px;">
+                        Volume under 3,000 mL triggers <strong>Critical Alert</strong>. Volume under 6,000 mL triggers <strong>Low Stock Alert</strong>.
+                    </small>
+                </div>
+
+                <!-- Form Action Buttons -->
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <h:commandButton value="#{inventoryBean.inventory.inventoryId == null ? 'Save Blood Stock Record' : 'Update Stock Level'}"
+                                     action="#{inventoryBean.saveStock}" styleClass="btn btn-primary" />
+                    <a href="inventory-list.xhtml" class="btn btn-secondary">Cancel</a>
+                </div>
+            </h:form>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&#169; 2026 Blood Donation Management System — University Assignment 3</p>
+    </footer>
+
+</h:body>
+</html>

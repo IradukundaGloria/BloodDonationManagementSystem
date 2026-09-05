@@ -1,0 +1,6 @@
+#FileLock
+#Sat Sep 05 18:39:42 CEST 2026
+hostName=192.168.56.1
+id=1a07270a1a0f122c55a456237868f658750f9c7168d
+method=file
+server=192.168.56.1\:64478

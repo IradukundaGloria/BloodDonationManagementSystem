@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Blood Donation Management System</title>
+    <!-- External CSS Reference -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    <!-- REQUIRED ASSIGNMENT REQUIREMENT B: INTERNAL CSS SECTION -->
+    <style>
+        /* Internal CSS specifically for Dashboard Summary Cards and Grid Layout */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-left: 5px solid #c92a2a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #212529;
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .module-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .module-card h3 {
+            color: #b71c1c;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</h:head>
+<h:body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <a href="index.xhtml" class="navbar-brand">
+            <span style="font-size: 1.8rem; color: #ff6b6b;">🩸</span> Blood Donation System
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.xhtml" class="active">Dashboard</a></li>
+            <li><a href="donor-list.xhtml">Donors</a></li>
+            <li><a href="recipient-list.xhtml">Recipients</a></li>
+            <li><a href="inventory-list.xhtml">Inventory</a></li>
+            <h:panelGroup rendered="#{not authBean.loggedIn}">
+                <li><a href="staff-login.xhtml">Staff Login</a></li>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{authBean.loggedIn}">
+                <li><a href="inventory-list.xhtml" style="color: #a5d6a7; font-weight: bold;">👤 #{authBean.currentUserName}</a></li>
+            </h:panelGroup>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <!-- Stat Summary Cards -->
+        <div class="stats-grid" style="margin-top: 1.5rem;">
+            <div class="stat-card" style="border-left-color: #c92a2a;">
+                <div class="stat-label">Registered Donors</div>
+                <div class="stat-number">#{dashboardBean.totalDonors}</div>
+                <a href="donor-list.xhtml" style="color: #c92a2a; font-weight: 600; text-decoration: none; font-size: 0.9rem;">Manage Donors →</a>
+            </div>
+
+            <div class="stat-card" style="border-left-color: #2b8a3e;">
+                <div class="stat-label">Registered Recipients</div>
+                <div class="stat-number">#{dashboardBean.totalRecipients}</div>
+                <a href="recipient-list.xhtml" style="color: #2b8a3e; font-weight: 600; text-decoration: none; font-size: 0.9rem;">Manage Recipients →</a>
+            </div>
+
+            <div class="stat-card" style="border-left-color: #e67e22;">
+                <div class="stat-label">Blood Donations Recorded</div>
+                <div class="stat-number">#{dashboardBean.totalDonations}</div>
+                <span style="color: #6c757d; font-size: 0.85rem;">Medical Approval Verified</span>
+            </div>
+
+            <div class="stat-card" style="border-left-color: #2980b9;">
+                <div class="stat-label">Pending Blood Requests</div>
+                <div class="stat-number">#{dashboardBean.totalRequests}</div>
+                <span style="color: #6c757d; font-size: 0.85rem;">Hospital Priority Queue</span>
+            </div>
+        </div>
+
+        <!-- System Modules Overview -->
+        <h2 style="margin-bottom: 1rem; color: #2c3e50;">Core System Modules</h2>
+
+        <div class="modules-grid">
+            <!-- Module 1: Donors -->
+            <div class="module-card">
+                <div>
+                    <h3>1. Donor Management (Full CRUD)</h3>
+                    <p style="color: #495057; font-size: 0.95rem; margin-bottom: 1rem;">
+                        Register new voluntary blood donors, inspect donor medical histories, update contact and eligibility statuses, or delete records.
+                    </p>
+                </div>
+                <a href="donor-list.xhtml" class="btn btn-primary" style="text-align: center;">Open Donor Directory</a>
+            </div>
+
+            <!-- Module 2: Recipients -->
+            <div class="module-card">
+                <div>
+                    <h3>2. Recipient Management (Full CRUD)</h3>
+                    <p style="color: #495057; font-size: 0.95rem; margin-bottom: 1rem;">
+                        Track individuals needing blood transfusions, specify critical medical needs, update patient details, and manage active status.
+                    </p>
+                </div>
+                <a href="recipient-list.xhtml" class="btn btn-primary" style="text-align: center; background-color: #2b8a3e;">Open Recipient Directory</a>
+            </div>
+
+            <!-- Module 3: Blood Inventory & Doctor Portal -->
+            <div class="module-card">
+                <div>
+                    <h3>3. Doctor &amp; Admin Inventory Portal</h3>
+                    <p style="color: #495057; font-size: 0.95rem; margin-bottom: 1rem;">
+                        Protected module for medical staff (User ID: DOC-1001 / ADM-1001) to monitor stock volume, track low stock alerts, and execute stock CRUD.
+                    </p>
+                </div>
+                <a href="inventory-list.xhtml" class="btn btn-primary" style="text-align: center; background-color: #6a1b9a;">Open Stock Directory</a>
+            </div>
+        </div>
+
+        <!-- Current Blood Inventory Levels Table -->
+        <div class="card" style="margin-top: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="color: #2c3e50; margin: 0;">Live Blood Inventory Stock Levels</h3>
+                <a href="inventory-list.xhtml" class="btn btn-secondary btn-sm">Manage Inventory Stock →</a>
+            </div>
+
+            <h:dataTable value="#{dashboardBean.inventoryList}" var="item" styleClass="data-table">
+                <h:column>
+                    <f:facet name="header">Blood Group</f:facet>
+                    <strong style="font-size: 1.1rem; color: #b71c1c;">#{item.bloodGroup}</strong>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Available Volume (mL)</f:facet>
+                    #{item.quantityAvailable} mL
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Storage Status</f:facet>
+                    <span class="badge #{item.storageStatus eq 'Normal' ? 'badge-success' : (item.storageStatus eq 'Low Stock' ? 'badge-warning' : 'badge-danger')}">
+                        #{item.storageStatus}
+                    </span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Last Updated</f:facet>
+                    <h:outputText value="#{item.lastUpdated}">
+                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm" />
+                    </h:outputText>
+                </h:column>
+            </h:dataTable>
+        </div>
+    </div>
+
+    <footer>
+        <p>&#169; 2026 Blood Donation Management System — University Java EE Web Application Project</p>
+    </footer>
+
+</h:body>
+</html>

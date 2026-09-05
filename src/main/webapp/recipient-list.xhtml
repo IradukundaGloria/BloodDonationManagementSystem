@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipient Directory — Blood Donation System</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</h:head>
+<h:body>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <a href="index.xhtml" class="navbar-brand">
+            <span style="font-size: 1.8rem; color: #ff6b6b;">🩸</span> Blood Donation System
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.xhtml">Dashboard</a></li>
+            <li><a href="donor-list.xhtml">Donors</a></li>
+            <li><a href="recipient-list.xhtml" class="active">Recipients</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <h:form id="recipientListForm">
+            <!-- Page Header Actions -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Blood Recipient Directory</h1>
+                    <p style="color: #6c757d; font-size: 0.95rem;">Manage registered blood recipients (READ, UPDATE, DELETE)</p>
+                </div>
+                <h:commandLink action="#{recipientBean.prepareNewRecipient}" styleClass="btn btn-primary" style="background-color: #2b8a3e;">
+                    + Register New Recipient
+                </h:commandLink>
+            </div>
+
+            <!-- REQUIRED ASSIGNMENT REQUIREMENT C: INLINE CSS DEMONSTRATION -->
+            <h:messages globalOnly="true"
+                        style="padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; list-style-type: none; background-color: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7;" />
+
+            <div class="card">
+                <h:dataTable value="#{recipientBean.recipientList}" var="r" styleClass="data-table" rendered="#{not empty recipientBean.recipientList}">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #<h:outputText value="#{r.recipientId}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Full Name</f:facet>
+                        <strong><h:outputText value="#{r.fullName}" /></strong>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Age</f:facet>
+                        <h:outputText value="#{r.age}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Gender</f:facet>
+                        <h:outputText value="#{r.gender}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Blood Group Needed</f:facet>
+                        <!-- Inline CSS applied to Blood Group Badge -->
+                        <span style="background-color: #e8f5e9; color: #2b8a3e; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 0.85rem;">
+                            <h:outputText value="#{r.bloodGroup}" />
+                        </span>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Medical Need</f:facet>
+                        <h:outputText value="#{r.medicalNeed}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Phone</f:facet>
+                        <h:outputText value="#{r.phone}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Status</f:facet>
+                        <!-- Inline CSS applied to status badge -->
+                        <span style="padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; background-color: #{r.status eq 'Active' ? '#d4edda' : '#e2e3e5'}; color: #{r.status eq 'Active' ? '#155724' : '#383d41'};">
+                            <h:outputText value="#{r.status}" />
+                        </span>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Actions</f:facet>
+                        <div style="display: flex; gap: 8px;">
+                            <h:commandLink action="#{recipientBean.prepareEditRecipient(r.recipientId)}" styleClass="btn btn-secondary btn-sm">
+                                Edit
+                            </h:commandLink>
+                            <h:commandLink action="#{recipientBean.deleteRecipient(r.recipientId)}"
+                                           onclick="return confirm('Are you sure you want to delete recipient #{r.fullName}?');"
+                                           styleClass="btn btn-danger btn-sm">
+                                Delete
+                            </h:commandLink>
+                        </div>
+                    </h:column>
+                </h:dataTable>
+
+                <h:panelGroup rendered="#{empty recipientBean.recipientList}">
+                    <p style="text-align: center; color: #6c757d; padding: 2rem 0;">No recipient records found in database.</p>
+                </h:panelGroup>
+            </div>
+        </h:form>
+
+    </div>
+
+    <footer>
+        <p>&#169; 2026 Blood Donation Management System — University Assignment 3</p>
+    </footer>
+
+</h:body>
+</html>
