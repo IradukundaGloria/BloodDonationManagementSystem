@@ -1,0 +1,16 @@
+com\blooddonation\repository\DonorRepository.class
+com\blooddonation\service\RecipientService.class
+com\blooddonation\repository\RecipientRepository.class
+com\blooddonation\exception\ErrorResponse.class
+com\blooddonation\controller\RecipientController.class
+com\blooddonation\exception\GlobalExceptionHandler.class
+com\blooddonation\BloodDonationManagementSystemAssignment4Application.class
+com\blooddonation\entity\Donor.class
+com\blooddonation\repository\BloodDonationRepository.class
+com\blooddonation\service\DonorService.class
+com\blooddonation\entity\Recipient.class
+com\blooddonation\exception\ResourceNotFoundException.class
+com\blooddonation\entity\BloodDonation.class
+com\blooddonation\service\BloodDonationService.class
+com\blooddonation\controller\BloodDonationController.class
+com\blooddonation\controller\DonorController.class

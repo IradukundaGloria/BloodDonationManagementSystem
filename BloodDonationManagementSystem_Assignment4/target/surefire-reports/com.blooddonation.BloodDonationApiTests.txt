@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.blooddonation.BloodDonationApiTests
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.85 s -- in com.blooddonation.BloodDonationApiTests

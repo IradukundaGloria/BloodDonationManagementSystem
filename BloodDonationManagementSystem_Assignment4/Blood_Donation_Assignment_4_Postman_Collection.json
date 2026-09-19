@@ -1,0 +1,307 @@
+{
+  "info": {
+    "name": "Blood Donation Assignment 4",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "CRUD tests for Donor, Recipient, and BloodDonation REST APIs."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "donorId",
+      "value": "1"
+    },
+    {
+      "key": "recipientId",
+      "value": "1"
+    },
+    {
+      "key": "donationId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Donor",
+      "item": [
+        {
+          "name": "Create Donor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('donorId', json.donorId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"age\": 25,\n  \"gender\": \"Male\",\n  \"bloodGroup\": \"O+\",\n  \"phone\": \"0780000000\",\n  \"email\": \"john.doe@example.com\",\n  \"address\": \"Kigali\",\n  \"registrationDate\": \"2026-09-19\",\n  \"eligibilityStatus\": \"Eligible\"\n}"
+            },
+            "url": "{{baseUrl}}/api/donors"
+          }
+        },
+        {
+          "name": "Get All Donors",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/donors"
+          }
+        },
+        {
+          "name": "Get Donor By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/donors/{{donorId}}"
+          }
+        },
+        {
+          "name": "Update Donor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"age\": 26,\n  \"gender\": \"Male\",\n  \"bloodGroup\": \"O+\",\n  \"phone\": \"0780000000\",\n  \"email\": \"john.doe@example.com\",\n  \"address\": \"Kigali\",\n  \"registrationDate\": \"2026-09-19\",\n  \"eligibilityStatus\": \"Eligible\"\n}"
+            },
+            "url": "{{baseUrl}}/api/donors/{{donorId}}"
+          }
+        },
+        {
+          "name": "Delete Donor",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/donors/{{donorId}}"
+          }
+        },
+        {
+          "name": "Create Donor Invalid Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"age\": 25,\n  \"gender\": \"Male\",\n  \"bloodGroup\": \"O+\",\n  \"phone\": \"0780000000\",\n  \"email\": \"not-an-email\",\n  \"address\": \"Kigali\",\n  \"registrationDate\": \"2026-09-19\",\n  \"eligibilityStatus\": \"Eligible\"\n}"
+            },
+            "url": "{{baseUrl}}/api/donors"
+          }
+        },
+        {
+          "name": "Get Donor Not Found",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/donors/99999"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recipient",
+      "item": [
+        {
+          "name": "Create Recipient",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('recipientId', json.recipientId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"age\": 30,\n  \"gender\": \"Female\",\n  \"bloodGroup\": \"A+\",\n  \"phone\": \"0790000000\",\n  \"email\": \"jane.doe@example.com\",\n  \"address\": \"Kigali\",\n  \"medicalNeed\": \"Blood transfusion\",\n  \"registrationDate\": \"2026-09-19\",\n  \"status\": \"Pending\"\n}"
+            },
+            "url": "{{baseUrl}}/api/recipients"
+          }
+        },
+        {
+          "name": "Get All Recipients",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/recipients"
+          }
+        },
+        {
+          "name": "Get Recipient By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/recipients/{{recipientId}}"
+          }
+        },
+        {
+          "name": "Update Recipient",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"age\": 31,\n  \"gender\": \"Female\",\n  \"bloodGroup\": \"A+\",\n  \"phone\": \"0790000000\",\n  \"email\": \"jane.doe@example.com\",\n  \"address\": \"Kigali\",\n  \"medicalNeed\": \"Blood transfusion\",\n  \"registrationDate\": \"2026-09-19\",\n  \"status\": \"Approved\"\n}"
+            },
+            "url": "{{baseUrl}}/api/recipients/{{recipientId}}"
+          }
+        },
+        {
+          "name": "Delete Recipient",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/recipients/{{recipientId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blood Donation",
+      "item": [
+        {
+          "name": "Create Donation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('donationId', json.donationId);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donor\": {\n    \"donorId\": {{donorId}}\n  },\n  \"bloodGroup\": \"O+\",\n  \"donationDate\": \"2026-09-19\",\n  \"quantity\": 450,\n  \"donationStatus\": \"Completed\",\n  \"medicalApproval\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/donations"
+          }
+        },
+        {
+          "name": "Get All Donations",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/donations"
+          }
+        },
+        {
+          "name": "Get Donation By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/donations/{{donationId}}"
+          }
+        },
+        {
+          "name": "Update Donation",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donor\": {\n    \"donorId\": {{donorId}}\n  },\n  \"bloodGroup\": \"O+\",\n  \"donationDate\": \"2026-09-19\",\n  \"quantity\": 500,\n  \"donationStatus\": \"Stored\",\n  \"medicalApproval\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/donations/{{donationId}}"
+          }
+        },
+        {
+          "name": "Delete Donation",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/donations/{{donationId}}"
+          }
+        },
+        {
+          "name": "Create Donation Invalid Quantity",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donor\": {\n    \"donorId\": {{donorId}}\n  },\n  \"bloodGroup\": \"O+\",\n  \"donationDate\": \"2026-09-19\",\n  \"quantity\": 0,\n  \"donationStatus\": \"Completed\",\n  \"medicalApproval\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/donations"
+          }
+        },
+        {
+          "name": "Create Donation Nonexistent Donor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donor\": {\n    \"donorId\": 99999\n  },\n  \"bloodGroup\": \"O+\",\n  \"donationDate\": \"2026-09-19\",\n  \"quantity\": 450,\n  \"donationStatus\": \"Completed\",\n  \"medicalApproval\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/donations"
+          }
+        }
+      ]
+    }
+  ]
+}
